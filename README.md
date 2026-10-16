@@ -1,8 +1,7 @@
 # Databricks Practice
 
-This repository contains hands-on practice and learning examples for **Azure Databricks**, focusing on Lakeflow Spark Declarative Pipelines, Auto Loader, and data engineering concepts.
+This repository contains hands-on practice and learning examples for **Azure Databricks**, focusing on Lakeflow Spark Declarative Pipelines, Auto Loader, backfill processing, and data engineering concepts.
 
-Repository: [Databricks---Sadanand](https://github.com/sadanand-DGB/Databricks---Sadanand)
 
 ## Repository Structure
 
@@ -12,6 +11,8 @@ src/
 │   └── my_transformation.py
 ├── auto_loader/
 │   └── auto_loader.py
+├── backfill/
+│   └── backfill.py
 └── README.md
 ```
 
@@ -32,18 +33,14 @@ src/
 - Using the `cloudFiles` format.
 - Configuring Auto Loader to identify the source file format.
 - Reading files from Databricks Volumes.
-- Understanding the role of incremental ingestion in data pipelines.
+- Understanding incremental ingestion in data pipelines.
 
-## Technologies Used
+### 3. Backfill Processing
 
-- **Azure Databricks**
-- **Apache Spark**
-- **PySpark**
-- **Lakeflow Spark Declarative Pipelines**
-- **Auto Loader**
-- **Delta Lake**
-- **Python**
-- **SQL**
+- Understanding historical data processing.
+- Loading previously available data into a pipeline.
+- Working with backfill flows alongside regular ingestion.
+- Understanding how backfill processing supports data completeness.
 
 ## Learning Objectives
 
@@ -55,11 +52,3 @@ The objectives of this repository are to:
 4. Learn incremental ingestion using Auto Loader.
 5. Practice pipeline configuration, execution, and troubleshooting.
 6. Understand historical data processing and backfill concepts.
-
-## Notes
-
-- These files are intended for learning and practice.
-- Source paths and Unity Catalog names may need to be adjusted for your Databricks environment.
-- Pipeline execution depends on available compute resources, permissions, and workspace configuration.
-- Review each example's comments before executing it.
-
