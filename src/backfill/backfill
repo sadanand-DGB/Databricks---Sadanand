@@ -1,0 +1,62 @@
+from pyspark import pipelines as dp
+from pyspark.sql import functions as F
+# 1. Create the Bronze streaming table
+# Both current and historical records will be written here.
+
+dp.create_streaming_table(name="bronze")
+
+# 2. Current ingestion flow
+# Read the current records and append them to Bronze.
+
+@dp.append_flow(
+    target="bronze",
+    name="current_ingestion"
+)
+def current_ingestion():
+
+    # Read the current source records.
+    df = spark.readStream.table(
+        "main.lab.backfill_current_source"
+    )
+    # Return the current records to the Bronze table.
+    return df
+
+# 3. Historical backfill flow
+
+@dp.append_flow(
+    target="bronze",
+    name="historical_backfill",
+    once=True
+)
+def historical_backfill():
+
+    # Read the historical records that need to be recovered.
+    df = spark.read.table(
+        "main.lab.backfill_historical_source"
+    )
+
+    # Append these historical records to the same Bronze table.
+    return df
+
+
+# 4. Silver table
+# Read Bronze, including records added by the backfill flow.
+# Keep only records dated October 8 and 9, 2026.
+
+
+@dp.table(name="silver")
+def silver():
+
+    # Read all records available in Bronze.
+    df = spark.readStream.table("bronze")
+
+    # Filter records using the ingestion timestamp.
+    df2 = df.filter(
+        F.to_date(F.col("ingest_timestamp")).isin(
+            "2026-10-08",
+            "2026-10-09"
+        )
+    )
+
+    # Return the filtered records to Silver.
+    return df2
